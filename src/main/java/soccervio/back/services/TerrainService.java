@@ -14,6 +14,8 @@ import soccervio.back.entities.Photo;
 import soccervio.back.entities.Terrain;
 import soccervio.back.mappers.TerrainMapper;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TerrainService {
@@ -32,5 +34,9 @@ public class TerrainService {
         t.setImage(photoService.save(new Photo(image.getBytes(), image.getContentType())));
         t.setProprietaire(userService.getUserById(terrainDTO.getProprietaire()));
         return new ResponseEntity<>(terrainDao.save(t), HttpStatus.valueOf(201));
+    }
+
+    public ResponseEntity<List<Terrain>> getTerrains(){
+        return new ResponseEntity<>(terrainDao.findAll(), HttpStatus.valueOf(200));
     }
 }

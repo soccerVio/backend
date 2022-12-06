@@ -14,7 +14,7 @@ public class Terrain {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Photo image;
     private float longitude;
     private float latitude;
