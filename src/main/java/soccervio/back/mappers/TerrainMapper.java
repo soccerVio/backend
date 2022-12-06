@@ -11,6 +11,7 @@ public class TerrainMapper {
         terrain.setLatitude(terrainDTO.getLatitude());
         terrain.setLongitude(terrain.getLongitude());
         terrain.setVille(terrainDTO.getVille());
+        terrain.setDescription(terrainDTO.getDescription());
         terrain.setHeureO(terrainDTO.getHeureO());
         terrain.setHeureF(terrainDTO.getHeureF());
         terrain.setPrixHr(terrainDTO.getPrixHr());

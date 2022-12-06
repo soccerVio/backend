@@ -12,6 +12,7 @@ public class TerrainDTO {
     private String ville;
     private Time heureO;
     private Time heureF;
+    private String description;
     private float prixHr;
     private int nbrJoueur;
     private boolean avecDouche;

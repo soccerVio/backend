@@ -18,6 +18,8 @@ public class Terrain {
     private Photo image;
     private float longitude;
     private float latitude;
+    @Lob
+    private String description;
     private String ville;
     private Time heureO;
     private Time heureF;
