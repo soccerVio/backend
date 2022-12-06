@@ -1,4 +1,4 @@
-package soccervio.back.mappers.user;
+package soccervio.back.mappers;
 
 import org.springframework.stereotype.Component;
 import soccervio.back.dtos.user.SignupUser;

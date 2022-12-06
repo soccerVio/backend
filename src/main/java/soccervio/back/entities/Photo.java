@@ -14,4 +14,9 @@ public class Photo {
     private long id;
     private byte[] image;
     private String type;
+
+    public Photo(byte[] image, String type) {
+        this.image = image;
+        this.type = type;
+    }
 }

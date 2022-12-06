@@ -16,7 +16,7 @@ import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
 import soccervio.back.entities.Role;
 import soccervio.back.entities.User;
-import soccervio.back.mappers.user.UserMapper;
+import soccervio.back.mappers.UserMapper;
 import soccervio.back.utils.JwtUtil;
 
 import java.util.HashMap;
@@ -67,6 +67,10 @@ public class UserService implements UserDetailsService {
         response.put("token", token);
         response.put("user", user);
         return new ResponseEntity<>(response, HttpStatus.valueOf(200));
+    }
+
+    public User getUserById(long id){
+        return userDao.findById(id).get();
     }
 
     @Override

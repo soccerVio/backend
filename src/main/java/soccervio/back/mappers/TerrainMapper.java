@@ -1,0 +1,22 @@
+package soccervio.back.mappers;
+
+import org.springframework.stereotype.Component;
+import soccervio.back.dtos.terrain.TerrainDTO;
+import soccervio.back.entities.Terrain;
+
+@Component
+public class TerrainMapper {
+    public Terrain fromTerrainDto(TerrainDTO terrainDTO){
+        Terrain terrain = new Terrain();
+        terrain.setLatitude(terrainDTO.getLatitude());
+        terrain.setLongitude(terrain.getLongitude());
+        terrain.setVille(terrainDTO.getVille());
+        terrain.setHeureO(terrainDTO.getHeureO());
+        terrain.setHeureF(terrainDTO.getHeureF());
+        terrain.setPrixHr(terrainDTO.getPrixHr());
+        terrain.setNbrJoueur(terrainDTO.getNbrJoueur());
+        terrain.setAvecDouche(terrainDTO.isAvecDouche());
+        terrain.setAssure(terrainDTO.isAssure());
+        return terrain;
+    }
+}
