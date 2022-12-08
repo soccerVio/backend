@@ -39,4 +39,8 @@ public class TerrainService {
     public ResponseEntity<List<Terrain>> getTerrains(){
         return new ResponseEntity<>(terrainDao.findAll(), HttpStatus.valueOf(200));
     }
+
+    public ResponseEntity<Terrain> getTerrainById(long id){
+        return new ResponseEntity<>(terrainDao.findById(id).get(), HttpStatus.valueOf(200));
+    }
 }

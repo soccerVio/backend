@@ -26,4 +26,9 @@ public class TerrainRest {
     public ResponseEntity<List<Terrain>> getTerrains() {
         return terrainService.getTerrains();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Terrain> getTerrainById(@PathVariable long id) {
+        return terrainService.getTerrainById(id);
+    }
 }
