@@ -5,10 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
-
 @Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id

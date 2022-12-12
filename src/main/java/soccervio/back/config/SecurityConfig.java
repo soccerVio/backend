@@ -12,9 +12,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import soccervio.back.constants.ApiContant;
 import soccervio.back.filters.AuthentificationFilter;
 import soccervio.back.filters.AutorisationFilter;
-
 
 @Configuration
 @EnableWebSecurity
@@ -36,16 +36,20 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        String base_url = "/api/v*/";
-
         httpSecurity.csrf().disable();
-        httpSecurity.authorizeRequests()
-                .antMatchers(base_url + "users/sign-up").permitAll()
-                .antMatchers(base_url + "users/sign-in").permitAll();
-        httpSecurity.sessionManagement()
+
+        httpSecurity
+                .authorizeRequests()
+                .antMatchers(ApiContant.BASE_URL + "/users/sign-up").permitAll()
+                .antMatchers(ApiContant.BASE_URL+ "/users/sign-in").permitAll();
+
+        httpSecurity
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         httpSecurity.addFilter(new AuthentificationFilter(authenticationManager(new AuthenticationConfiguration())));
         httpSecurity.addFilterBefore(autorisationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return httpSecurity.build();
     }
 }

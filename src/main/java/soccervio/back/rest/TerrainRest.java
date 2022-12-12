@@ -5,13 +5,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import soccervio.back.constants.ApiContant;
 import soccervio.back.entities.Terrain;
 import soccervio.back.services.TerrainService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/terrains")
+@RequestMapping(ApiContant.BASE_URL + "/terrains")
 @AllArgsConstructor
 public class TerrainRest {
 

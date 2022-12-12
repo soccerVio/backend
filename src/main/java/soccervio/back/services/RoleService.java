@@ -11,10 +11,6 @@ public class RoleService {
 
     private RoleDao roleDao;
 
-    public Role save(Role role) {
-        return roleDao.save(role);
-    }
-
     public boolean existsByAuthority(String authority) {
         return roleDao.existsByAuthority(authority);
     }

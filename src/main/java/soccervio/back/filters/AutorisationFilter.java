@@ -28,18 +28,22 @@ public class AutorisationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
         String autorisation = request.getHeader(JwtConstant.AUTORIZATION);
         String token = null;
         String usernameFromToken = null;
+
         if(autorisation != null && autorisation.startsWith(JwtConstant.BEARER)){
             token = autorisation.substring(JwtConstant.BEARER.length());
             usernameFromToken = jwtUtil.getUsernameFromToken(token);
         }
+
         if(usernameFromToken != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = userService.loadUserByUsername(usernameFromToken);
             if(jwtUtil.validateToken(token, userDetails))
                 jwtUtil.registerAuthenticationTokenInContext(userDetails, request);
         }
+
         filterChain.doFilter(request, response);
     }
 }

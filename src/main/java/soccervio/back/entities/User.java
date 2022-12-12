@@ -2,17 +2,17 @@ package soccervio.back.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import soccervio.back.entities.enums.Gender;
 
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
@@ -22,7 +22,7 @@ public class User implements UserDetails {
     private long id;
 
     @Column(length = 50, nullable = false)
-    private String fullname;
+    private String nomComplet;
 
     @Column(length = 50, nullable = false, unique = true)
     private String username;
@@ -31,20 +31,16 @@ public class User implements UserDetails {
     private String email;
 
     @Column(length = 25, unique = true)
-    private String phoneNumber;
+    private String numTel;
 
     @OneToOne
-    private Photo photo;
-
-    @Column(length = 6)
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Image image;
 
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
-    private Date createdAt;
+    private Date dateCreation;
 
     private boolean enabled = true;
 
@@ -71,4 +67,5 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
 }

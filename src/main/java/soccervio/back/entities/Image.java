@@ -5,18 +5,21 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
-@Table(name = "photos")
-public class Photo {
+@Table(name = "images")
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private byte[] image;
+    private byte[] content;
     private String type;
 
-    public Photo(byte[] image, String type) {
-        this.image = image;
+    public Image(byte[] content, String type) {
+        this.content = content;
         this.type = type;
     }
 }

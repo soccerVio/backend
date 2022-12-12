@@ -13,9 +13,8 @@ public class UserMapper {
         User user = new User();
         user.setUsername(signupUser.getUsername());
         user.setEmail(signupUser.getEmail());
-        user.setFullname(signupUser.getFullname());
-        user.setCreatedAt(new Date());
-        user.setGender(signupUser.getGender());
+        user.setNomComplet(signupUser.getNomComplet());
+        user.setDateCreation(new Date());
         return user;
     }
 }

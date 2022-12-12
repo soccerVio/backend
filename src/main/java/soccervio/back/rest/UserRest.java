@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import soccervio.back.constants.ApiContant;
 import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
 import soccervio.back.services.UserService;
@@ -13,7 +14,7 @@ import soccervio.back.services.UserService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/users/")
+@RequestMapping(ApiContant.BASE_URL + "/users/")
 @AllArgsConstructor
 public class UserRest {
 

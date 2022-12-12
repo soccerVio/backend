@@ -37,21 +37,24 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<String> signup(SignupUser signupUser){
         if (userDao.existsByUsernameOrEmail(signupUser.getUsername(), signupUser.getEmail()))
-            return new ResponseEntity("Username or email already used", HttpStatus.valueOf(400));
+            return new ResponseEntity<>("Username ou email existe déja", HttpStatus.valueOf(400));
 
-        if(!signupUser.getType().equals("ROLE_JOUEUR") && !signupUser.getType().equals("ROLE_PROPRIETAIRE"))
-            return new ResponseEntity("Type field is invalid", HttpStatus.valueOf(400));
+        if(!signupUser.getTypeCompte().equals("ROLE_JOUEUR")
+                && !signupUser.getTypeCompte().equals("ROLE_PROPRIETAIRE"))
+            return new ResponseEntity<>("Le type du compte est incorrect", HttpStatus.valueOf(400));
 
         User user = userMapper.fromSignupUser(signupUser);
         user.setPassword(passwordEncoder.encode(signupUser.getPassword()));
+
         Role role;
-        if(roleService.existsByAuthority(signupUser.getType()))
-            role = roleService.findByAuthority(String.valueOf(signupUser.getType()));
+        if(roleService.existsByAuthority(signupUser.getTypeCompte()))
+            role = roleService.findByAuthority(signupUser.getTypeCompte());
         else
-            role = roleService.save(new Role(String.valueOf(signupUser.getType())));
+            role = new Role(signupUser.getTypeCompte());
         user.setAuthorities(List.of(role));
+
         userDao.save(user);
-        return new ResponseEntity<>("User created", HttpStatus.valueOf(201));
+        return new ResponseEntity<>("Utilisateur crée avec succès", HttpStatus.valueOf(201));
     }
 
     public ResponseEntity<Object> signin(SigninUser signinUser){
@@ -70,7 +73,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(long id){
-        return userDao.findById(id).get();
+        return userDao.findById(id).orElse(null);
     }
 
     @Override

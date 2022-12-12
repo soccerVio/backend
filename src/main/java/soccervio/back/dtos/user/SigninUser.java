@@ -1,15 +1,20 @@
 package soccervio.back.dtos.user;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class SigninUser {
+
     @NotBlank
     private String username;
+
     @NotBlank
     private String password;
+
 }
