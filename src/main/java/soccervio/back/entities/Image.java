@@ -17,6 +17,8 @@ public class Image {
     private long id;
     private byte[] content;
     private String type;
+    //@ManyToOne
+    //private Terrain terrain;
 
     public Image(byte[] content, String type) {
         this.content = content;

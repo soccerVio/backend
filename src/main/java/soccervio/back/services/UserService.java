@@ -37,11 +37,11 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity<String> signup(SignupUser signupUser){
         if (userDao.existsByUsernameOrEmail(signupUser.getUsername(), signupUser.getEmail()))
-            return new ResponseEntity<>("Username ou email existe déja", HttpStatus.valueOf(400));
+            return new ResponseEntity<>("Username ou email existe déja", HttpStatus.valueOf(405));
 
         if(!signupUser.getTypeCompte().equals("ROLE_JOUEUR")
                 && !signupUser.getTypeCompte().equals("ROLE_PROPRIETAIRE"))
-            return new ResponseEntity<>("Le type du compte est incorrect", HttpStatus.valueOf(400));
+            return new ResponseEntity<>("Le type du compte est incorrect", HttpStatus.valueOf(406));
 
         User user = userMapper.fromSignupUser(signupUser);
         user.setPassword(passwordEncoder.encode(signupUser.getPassword()));

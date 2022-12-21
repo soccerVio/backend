@@ -10,9 +10,10 @@ import java.util.Date;
 public class TerrainMapper {
     public Terrain fromTerrainDto(TerrainDTO terrainDTO){
         Terrain terrain = new Terrain();
+        terrain.setTitre(terrainDTO.getTitre());
         terrain.setLatitude(terrainDTO.getLatitude());
-        terrain.setLongitude(terrain.getLongitude());
-        terrain.setVille(terrainDTO.getVille());
+        terrain.setLongitude(terrainDTO.getLongitude());
+        terrain.setAdresse(terrainDTO.getAdresse());
         terrain.setDescription(terrainDTO.getDescription());
         terrain.setHeureO(terrainDTO.getHeureO());
         terrain.setHeureF(terrainDTO.getHeureF());

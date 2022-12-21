@@ -9,7 +9,9 @@ import soccervio.back.constants.ApiContant;
 import soccervio.back.entities.Terrain;
 import soccervio.back.services.TerrainService;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(ApiContant.BASE_URL + "/terrains")
@@ -19,8 +21,8 @@ public class TerrainRest {
     private TerrainService terrainService;
 
     @PostMapping(value = "/ajout", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> ajoutTerrain(@RequestParam MultipartFile image, @RequestParam String terrain) {
-        return terrainService.ajoutTerrain(image, terrain);
+    public ResponseEntity<Object> ajoutTerrain(@RequestParam MultipartFile[] images, @RequestParam String terrain) {
+        return terrainService.ajoutTerrain(images, terrain);
     }
 
     @GetMapping
@@ -31,5 +33,15 @@ public class TerrainRest {
     @GetMapping("/{id}")
     public ResponseEntity<Terrain> getTerrainById(@PathVariable long id) {
         return terrainService.getTerrainById(id);
+    }
+
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Object> modifierTerrain(@RequestParam Optional<MultipartFile[]> images, @RequestParam String terrain) {
+        return terrainService.modifierTerrain(images, terrain);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteTerrain(@PathVariable long id) {
+        return terrainService.deleteTerrain(id);
     }
 }

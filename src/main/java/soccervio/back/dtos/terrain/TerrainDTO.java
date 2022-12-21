@@ -13,13 +13,16 @@ import java.sql.Time;
 public class TerrainDTO {
 
     @NotBlank
+    private String titre;
+
+    @NotBlank
     private float longitude;
 
     @NotBlank
     private float latitude;
 
     @NotBlank
-    private String ville;
+    private String adresse;
 
     @NotBlank
     private Time heureO;
