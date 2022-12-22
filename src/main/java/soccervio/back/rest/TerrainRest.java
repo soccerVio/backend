@@ -40,6 +40,11 @@ public class TerrainRest {
         return terrainService.modifierTerrain(images, terrain);
     }
 
+    @GetMapping("/search/{adresse}")
+    public ResponseEntity<List<Terrain>> searchByAdresse(@PathVariable String adresse) {
+        return terrainService.searchByAdresse(adresse);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteTerrain(@PathVariable long id) {
         return terrainService.deleteTerrain(id);

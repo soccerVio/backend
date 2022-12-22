@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -82,8 +83,28 @@ public class TerrainService {
         }
         return new ResponseEntity<>(terrainDao.save(updatedTerrain), HttpStatus.ACCEPTED);
     }
+
+    /*public List<Pair<Float, Float>> getPositionsNear(float latitude,float longitude){
+        List<Terrain> terrains1 = terrainDao.findByLatitudeBetweenAndLongitudeBetween(
+                latitude, latitude + 0.01F, longitude,longitude + 0.01F);
+        List<Terrain> terrains2 = terrainDao.findByLatitudeBetweenAndLongitudeBetween(
+                latitude, latitude - 0.01F, longitude,longitude - 0.01F);
+        List<Terrain> terrains3 = terrainDao.findByLatitudeBetweenAndLongitudeBetween(
+                latitude, latitude - 0.01F, longitude,longitude + 0.01F);
+        List<Terrain> terrains4 = terrainDao.findByLatitudeBetweenAndLongitudeBetween(
+                latitude, latitude + 0.01F, longitude,longitude - 0.01F);
+    }*/
+
+    public ResponseEntity<List<Terrain>> searchByAdresse(String adresse){
+        List<Terrain> terrains = terrainDao.findByAdresseContainsIgnoreCase(adresse);
+        System.out.println(adresse);
+        for (Terrain t : terrains)
+            System.out.println(t);
+        return new ResponseEntity<>(terrains, HttpStatus.valueOf(200));
+    }
+
     public ResponseEntity<String> deleteTerrain(long id){
         terrainDao.deleteById(id);
-        return new ResponseEntity<>("Terrain supprimée avec succès", HttpStatus.valueOf(200));
+        return new ResponseEntity<>("Terrain supprimé avec succès", HttpStatus.valueOf(200));
     }
 }
