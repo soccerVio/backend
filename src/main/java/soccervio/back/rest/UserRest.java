@@ -1,6 +1,5 @@
 package soccervio.back.rest;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +14,13 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping(ApiContant.BASE_URL + "/users/")
-@AllArgsConstructor
 public class UserRest {
 
-    private UserService userService;
+    private final UserService userService;
+
+    public UserRest(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping("sign-up")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupUser signupUser) {

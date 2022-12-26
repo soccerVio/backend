@@ -1,15 +1,8 @@
 package soccervio.back.dtos.user;
 
-import lombok.*;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class SignupUser {
 
     @NotBlank
@@ -27,4 +20,27 @@ public class SignupUser {
 
     @NotBlank
     private String typeCompte;
+
+    public SignupUser() {
+    }
+
+    public String getNomComplet() {
+        return nomComplet;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getTypeCompte() {
+        return typeCompte;
+    }
 }

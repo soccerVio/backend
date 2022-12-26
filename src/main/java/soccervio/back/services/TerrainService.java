@@ -1,8 +1,6 @@
 package soccervio.back.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
@@ -23,12 +21,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
 public class TerrainService {
 
-    private TerrainDao terrainDao;
-    private UserService userService;
-    private TerrainMapper terrainMapper;
+    private final TerrainDao terrainDao;
+    private final UserService userService;
+    private final TerrainMapper terrainMapper;
+
+    public TerrainService(TerrainDao terrainDao, UserService userService, TerrainMapper terrainMapper) {
+        this.terrainDao = terrainDao;
+        this.userService = userService;
+        this.terrainMapper = terrainMapper;
+    }
 
     @SneakyThrows
     public ResponseEntity<Object> ajoutTerrain(MultipartFile[] images, String terrain){

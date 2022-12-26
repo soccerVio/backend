@@ -1,6 +1,5 @@
 package soccervio.back.services;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserDao userDao;
@@ -34,6 +32,15 @@ public class UserService implements UserDetailsService {
     @Autowired
     private AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
+
+    public UserService(UserDao userDao, RoleService roleService, UserMapper userMapper,
+                       PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.userDao = userDao;
+        this.roleService = roleService;
+        this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
 
     public ResponseEntity<String> signup(SignupUser signupUser){
         if (userDao.existsByUsernameOrEmail(signupUser.getUsername(), signupUser.getEmail()))

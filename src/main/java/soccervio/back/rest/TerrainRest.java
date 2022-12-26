@@ -1,6 +1,5 @@
 package soccervio.back.rest;
 
-import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +13,13 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(ApiContant.BASE_URL + "/terrains")
-@AllArgsConstructor
 public class TerrainRest {
 
-    private TerrainService terrainService;
+    private final TerrainService terrainService;
+
+    public TerrainRest(TerrainService terrainService) {
+        this.terrainService = terrainService;
+    }
 
     @PostMapping(value = "/ajout", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Object> ajoutTerrain(@RequestParam MultipartFile[] images, @RequestParam String terrain) {

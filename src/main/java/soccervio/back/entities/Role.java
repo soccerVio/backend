@@ -5,13 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 
-@Entity
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "roles")
+@Entity(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,5 +15,30 @@ public class Role implements GrantedAuthority {
 
     public Role(String authority) {
         this.authority = authority;
+    }
+
+    public Role() {
+    }
+
+    public Role(int id, String authority) {
+        this.id = id;
+        this.authority = authority;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    @Override
+    public String getAuthority() {
+        return null;
     }
 }

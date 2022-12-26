@@ -8,13 +8,7 @@ import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 
-@Entity
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "users")
+@Entity(name = "users")
 public class User implements UserDetails {
 
     @Id
@@ -50,6 +44,107 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
     private Collection<Role> authorities;
 
+    public User() {
+    }
+
+    public User(long id, String nomComplet, String username, String email, String numTel, Image image,
+                String password, Date dateCreation, boolean enabled, Collection<Role> authorities) {
+        this.id = id;
+        this.nomComplet = nomComplet;
+        this.username = username;
+        this.email = email;
+        this.numTel = numTel;
+        this.image = image;
+        this.password = password;
+        this.dateCreation = dateCreation;
+        this.enabled = enabled;
+        this.authorities = authorities;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getNomComplet() {
+        return nomComplet;
+    }
+
+    public void setNomComplet(String nomComplet) {
+        this.nomComplet = nomComplet;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNumTel() {
+        return numTel;
+    }
+
+    public void setNumTel(String numTel) {
+        this.numTel = numTel;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Date getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(Date dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public Collection<Role> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<Role> authorities) {
+        this.authorities = authorities;
+    }
+
     @Override
     @JsonIgnore
     public boolean isAccountNonExpired() {
@@ -67,5 +162,6 @@ public class User implements UserDetails {
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
 
 }

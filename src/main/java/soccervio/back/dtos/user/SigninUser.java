@@ -1,14 +1,8 @@
 package soccervio.back.dtos.user;
 
-import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class SigninUser {
 
     @NotBlank
@@ -16,5 +10,16 @@ public class SigninUser {
 
     @NotBlank
     private String password;
+
+    public SigninUser() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 
 }

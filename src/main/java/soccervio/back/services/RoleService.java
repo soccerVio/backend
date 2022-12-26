@@ -1,15 +1,17 @@
 package soccervio.back.services;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import soccervio.back.dao.RoleDao;
 import soccervio.back.entities.Role;
 
 @Service
-@AllArgsConstructor
 public class RoleService {
 
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
+
+    public RoleService(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
 
     public boolean existsByAuthority(String authority) {
         return roleDao.existsByAuthority(authority);

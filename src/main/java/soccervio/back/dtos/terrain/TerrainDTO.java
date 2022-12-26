@@ -1,15 +1,8 @@
 package soccervio.back.dtos.terrain;
 
-import lombok.*;
-
 import javax.validation.constraints.NotBlank;
 import java.sql.Time;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
 public class TerrainDTO {
 
     @NotBlank
@@ -47,5 +40,56 @@ public class TerrainDTO {
 
     @NotBlank
     private long proprietaire;
+
+    public TerrainDTO() {
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public Time getHeureO() {
+        return heureO;
+    }
+
+    public Time getHeureF() {
+        return heureF;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public float getPrixHr() {
+        return prixHr;
+    }
+
+    public int getNbrJoueur() {
+        return nbrJoueur;
+    }
+
+    public boolean isAvecDouche() {
+        return avecDouche;
+    }
+
+    public boolean isAssure() {
+        return assure;
+    }
+
+    public long getProprietaire() {
+        return proprietaire;
+    }
 
 }
