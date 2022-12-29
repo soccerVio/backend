@@ -8,4 +8,6 @@ import soccervio.back.entities.User;
 public interface UserDao extends JpaRepository<User, Long> {
     User findByUsername(String usename);
     boolean existsByUsernameOrEmail(String usename, String email);
+	User findById(long id);
+    
 }

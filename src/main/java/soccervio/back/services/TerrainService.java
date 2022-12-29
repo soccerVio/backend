@@ -97,7 +97,9 @@ public class TerrainService {
         List<Terrain> terrains4 = terrainDao.findByLatitudeBetweenAndLongitudeBetween(
                 latitude, latitude + 0.01F, longitude,longitude - 0.01F);
     }*/
-
+    
+    
+    
     public ResponseEntity<List<Terrain>> searchByAdresse(String adresse){
         List<Terrain> terrains = terrainDao.findByAdresseContainsIgnoreCase(adresse);
         System.out.println(adresse);
@@ -110,4 +112,12 @@ public class TerrainService {
         terrainDao.deleteById(id);
         return new ResponseEntity<>("Terrain supprimé avec succès", HttpStatus.valueOf(200));
     }
+    
+    
+    
+  /*  public  List<Terrain> searchTerrainsByPosition(double longitude1, double latitude1, double longitude2, double latitude2) {
+          return terrainDao.findByPositionBetween(longitude1, latitude1, longitude2, latitude2);
+        
+        
+    }*/
 }

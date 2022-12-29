@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import soccervio.back.constants.ApiContant;
 import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
+import soccervio.back.dtos.user.UserDTO;
 import soccervio.back.services.UserService;
+
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -31,4 +34,9 @@ public class UserRest {
     public ResponseEntity<Object> signin(@Valid @RequestBody SigninUser signinUser) {
         return userService.signin(signinUser);
     }
+    @PutMapping(value = "/update")
+    public ResponseEntity<Object> updateAccount(@PathVariable Long id ,@RequestBody UserDTO userDTO) {
+        return  userService.updateAccount(id, userDTO);
+    }
+    
 }

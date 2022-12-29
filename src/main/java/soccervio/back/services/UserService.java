@@ -1,5 +1,9 @@
 package soccervio.back.services;
 
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,17 +14,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
 import soccervio.back.dao.UserDao;
 import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
+import soccervio.back.dtos.user.UserDTO;
 import soccervio.back.entities.Role;
 import soccervio.back.entities.User;
 import soccervio.back.mappers.UserMapper;
 import soccervio.back.utils.JwtUtil;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import soccervio.back.entities.Image;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -90,4 +93,26 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("Username not found");
         return user;
     }
+   
+    
+    
+    public ResponseEntity<Object> updateAccount(long userId , UserDTO userDto){
+    	User currentUser =  userDao.findById(userId);
+    	if (currentUser == null) {
+    		throw new UsernameNotFoundException("user not found");
+    	}
+    		currentUser.setEmail(userDto.getEmail());
+    		currentUser.setNomComplet(userDto.getNomComplet());
+    		currentUser.setUsername(userDto.getUsername());
+    		currentUser.setNumTel(userDto.getNumTel());
+    		currentUser. setPassword(passwordEncoder.encode(userDto.getPassword()));
+    		Image image = new Image();
+        	image.setContent(userDto.getImage().getContent());
+        	image.setType(userDto.getImage().getType());
+        	currentUser.setImage(image);
+    		User updatedUser = userDao.save(currentUser);
+    	return new ResponseEntity<>(updatedUser, HttpStatus.ACCEPTED);
+    }
+    
 }
+
