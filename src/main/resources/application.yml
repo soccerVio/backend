@@ -11,5 +11,9 @@ spring:
                 dialect: org.hibernate.dialect.PostgreSQLDialect
     main:
         allow-circular-references: true
+    servlet:
+        multipart:
+            max-file-size: 100MB
+            max-request-size: 100MB
 jwt:
     secretKey: SecretKey12345

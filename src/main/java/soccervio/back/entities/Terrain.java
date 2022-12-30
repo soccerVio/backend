@@ -1,7 +1,5 @@
 package soccervio.back.entities;
 
-import lombok.*;
-
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
@@ -15,7 +13,6 @@ public class Terrain {
     private long id;
     private String titre;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @ToString.Exclude
     private Set<Image> images;
     private float longitude;
     private float latitude;

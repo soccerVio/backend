@@ -1,8 +1,7 @@
 package soccervio.back.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.SneakyThrows;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -33,9 +32,13 @@ public class TerrainService {
         this.terrainMapper = terrainMapper;
     }
 
-    @SneakyThrows
     public ResponseEntity<Object> ajoutTerrain(MultipartFile[] images, String terrain){
-        TerrainDTO terrainDTO = new ObjectMapper().readValue(terrain, TerrainDTO.class);
+        TerrainDTO terrainDTO = null;
+        try {
+            terrainDTO = new ObjectMapper().readValue(terrain, TerrainDTO.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         Terrain t = terrainMapper.fromTerrainDto(terrainDTO);
         Set<Image> imageList = Arrays.stream(images).map(image -> {
             try {
@@ -57,9 +60,13 @@ public class TerrainService {
         return new ResponseEntity<>(terrainDao.findById(id).orElse(null), HttpStatus.valueOf(200));
     }
 
-    @SneakyThrows
     public ResponseEntity<Object> modifierTerrain(Optional<MultipartFile[]> images, String terrain){
-        Terrain t = new ObjectMapper().readValue(terrain, Terrain.class);
+        Terrain t = null;
+        try {
+            t = new ObjectMapper().readValue(terrain, Terrain.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
         Terrain updatedTerrain = terrainDao.findById(t.getId()).get();
         updatedTerrain.setTitre(t.getTitre());
         updatedTerrain.setDescription(t.getDescription());
