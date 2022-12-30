@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.util.ErrorMessages;
 import soccervio.back.dao.UserDao;
 import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
@@ -87,7 +86,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getUserById(long id){
-        return userDao.findById(id).orElse(null);
+        return userDao.findById(id);
     }
 
     @Override

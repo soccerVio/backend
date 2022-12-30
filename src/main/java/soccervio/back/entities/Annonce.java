@@ -1,10 +1,5 @@
 package soccervio.back.entities;
 
-
-<<<<<<< HEAD
-=======
-
->>>>>>> ca552d4c61ff1e571ed8fca5f5ff49ab2d6d0d4d
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
