@@ -3,6 +3,7 @@ package soccervio.back.entities;
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name="terrains")
@@ -12,8 +13,10 @@ public class Terrain {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String titre;
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Image> images;
+    @ElementCollection
+    @CollectionTable(name="images", joinColumns=@JoinColumn(name="terrain_id", referencedColumnName = "id"))
+    @Column(name = "path")
+    private List<String> images;
     private float longitude;
     private float latitude;
     @Lob
@@ -32,9 +35,10 @@ public class Terrain {
     public Terrain() {
     }
 
-    public Terrain(long id, String titre, Set<Image> images, float longitude, float latitude,
-                   String description, Date dateCreation, String adresse, LocalTime heureO, LocalTime heureF,
-                   float prixHr, int nbrJoueur, boolean avecDouche, boolean assure, User proprietaire) {
+    public Terrain(long id, String titre, List<String> images, float longitude,
+                   float latitude, String description, Date dateCreation, String adresse,
+                   LocalTime heureO, LocalTime heureF, float prixHr, int nbrJoueur,
+                   boolean avecDouche, boolean assure, User proprietaire) {
         this.id = id;
         this.titre = titre;
         this.images = images;
@@ -68,11 +72,11 @@ public class Terrain {
         this.titre = titre;
     }
 
-    public Set<Image> getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(Set<Image> images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 

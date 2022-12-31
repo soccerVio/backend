@@ -21,9 +21,6 @@ public class SignupUser {
     @NotBlank
     private String typeCompte;
 
-    public SignupUser() {
-    }
-
     public String getNomComplet() {
         return nomComplet;
     }

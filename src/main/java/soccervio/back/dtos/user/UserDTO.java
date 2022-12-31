@@ -1,8 +1,5 @@
 package soccervio.back.dtos.user;
 
-import soccervio.back.entities.Image;
-
-
 import javax.validation.constraints.NotBlank;
 
 public class UserDTO {
@@ -17,8 +14,8 @@ public class UserDTO {
     private String email;
     @NotBlank
     private String numTel;
-    @NotBlank
-    private Image image;
+    //@NotBlank
+    //private Image image;
 	public String getUsername() {
 		return username;
 	}
@@ -49,12 +46,12 @@ public class UserDTO {
 	public void setNumTel(String numTel) {
 		this.numTel = numTel;
 	}
-	public Image getImage() {
-		return image;
-	}
-	public void setImage(Image image) {
-		this.image = image;
-	}
+	//public Image getImage() {
+		//return image;
+	//}
+	//public void setImage(Image image) {
+		//this.image = image;
+	//}
 
 
 }

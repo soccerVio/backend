@@ -17,3 +17,9 @@ spring:
             max-request-size: 100MB
 jwt:
     secretKey: SecretKey12345
+images:
+    uploads: target/classes/static/uploads
+
+app:
+    root:
+        backend: http://localhost:8080

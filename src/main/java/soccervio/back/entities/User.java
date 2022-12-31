@@ -26,8 +26,7 @@ public class User implements UserDetails {
     @Column(length = 25, unique = true)
     private String numTel;
 
-    @OneToOne
-    private Image image;
+    private String photoProfil;
 
     @Column(nullable = false)
     private String password;
@@ -46,14 +45,15 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(long id, String nomComplet, String username, String email, String numTel, Image image,
-                String password, Date dateCreation, boolean enabled, Collection<Role> authorities) {
+    public User(long id, String nomComplet, String username, String email,
+                String numTel, String photoProfil, String password, Date dateCreation,
+                boolean enabled, Collection<Role> authorities) {
         this.id = id;
         this.nomComplet = nomComplet;
         this.username = username;
         this.email = email;
         this.numTel = numTel;
-        this.image = image;
+        this.photoProfil = photoProfil;
         this.password = password;
         this.dateCreation = dateCreation;
         this.enabled = enabled;
@@ -101,12 +101,12 @@ public class User implements UserDetails {
         this.numTel = numTel;
     }
 
-    public Image getImage() {
-        return image;
+    public String getPhotoProfil() {
+        return photoProfil;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setPhotoProfil(String photoProfil) {
+        this.photoProfil = photoProfil;
     }
 
     @Override

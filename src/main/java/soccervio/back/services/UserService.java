@@ -22,7 +22,6 @@ import soccervio.back.entities.Role;
 import soccervio.back.entities.User;
 import soccervio.back.mappers.UserMapper;
 import soccervio.back.utils.JwtUtil;
-import soccervio.back.entities.Image;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -109,10 +108,10 @@ public class UserService implements UserDetailsService {
     		currentUser.setUsername(userDto.getUsername());
     		currentUser.setNumTel(userDto.getNumTel());
     		currentUser. setPassword(passwordEncoder.encode(userDto.getPassword()));
-    		Image image = new Image();
-        	image.setContent(userDto.getImage().getContent());
-        	image.setType(userDto.getImage().getType());
-        	currentUser.setImage(image);
+    		//Image image = new Image();
+        	//image.setContent(userDto.getImage().getContent());
+        	//image.setType(userDto.getImage().getType());
+        	//currentUser.setImage(image);
     		User updatedUser = userDao.save(currentUser);
     	return new ResponseEntity<>(updatedUser, HttpStatus.ACCEPTED);
     }

@@ -19,7 +19,7 @@ public class Annonce {
     private boolean ferme;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "joueurs_annoces",
+    @JoinTable(name = "joueurs_annonces",
             joinColumns = @JoinColumn(name = "annonce_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "joueur_id", referencedColumnName = "id"))
     private List<User> joueurs;

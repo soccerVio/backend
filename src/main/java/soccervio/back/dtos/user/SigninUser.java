@@ -11,9 +11,6 @@ public class SigninUser {
     @NotBlank
     private String password;
 
-    public SigninUser() {
-    }
-
     public String getUsername() {
         return username;
     }

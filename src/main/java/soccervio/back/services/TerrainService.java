@@ -2,22 +2,19 @@ package soccervio.back.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import soccervio.back.dao.TerrainDao;
 import soccervio.back.dtos.terrain.TerrainDTO;
-import soccervio.back.entities.Image;
 import soccervio.back.entities.Terrain;
 import soccervio.back.mappers.TerrainMapper;
+import soccervio.back.utils.ImageUtil;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class TerrainService {
@@ -25,29 +22,34 @@ public class TerrainService {
     private final TerrainDao terrainDao;
     private final UserService userService;
     private final TerrainMapper terrainMapper;
+    private final ImageUtil imageUtil;
 
-    public TerrainService(TerrainDao terrainDao, UserService userService, TerrainMapper terrainMapper) {
+    public TerrainService(TerrainDao terrainDao, UserService userService,
+                          TerrainMapper terrainMapper, ImageUtil imageUtil) {
         this.terrainDao = terrainDao;
         this.userService = userService;
         this.terrainMapper = terrainMapper;
+        this.imageUtil = imageUtil;
     }
 
     public ResponseEntity<Object> ajoutTerrain(MultipartFile[] images, String terrain){
         TerrainDTO terrainDTO = null;
         try {
-            terrainDTO = new ObjectMapper().readValue(terrain, TerrainDTO.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            terrainDTO = objectMapper.readValue(terrain, TerrainDTO.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
         Terrain t = terrainMapper.fromTerrainDto(terrainDTO);
-        Set<Image> imageList = Arrays.stream(images).map(image -> {
+        List<String> imagesList = Arrays.stream(images).map(image -> {
             try {
-                return new Image(image.getBytes(), image.getContentType());
+                return imageUtil.saveImage(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }).collect(Collectors.toSet());
-        t.setImages(imageList);
+        }).toList();
+        t.setImages(imagesList);
         t.setProprietaire(userService.getUserById(terrainDTO.getProprietaire()));
         return new ResponseEntity<>(terrainDao.save(t), HttpStatus.valueOf(201));
     }
@@ -80,10 +82,10 @@ public class TerrainService {
         if(images.isPresent()){
             MultipartFile[] imagesList = images.get();
             if(imagesList.length > 0){
-                Set<Image> imageSet = updatedTerrain.getImages();
+                List<String> imageSet = updatedTerrain.getImages();
                 Arrays.stream(imagesList).forEach(image -> {
                     try {
-                        imageSet.add(new Image(image.getBytes(), image.getContentType()));
+                        imageSet.add(imageUtil.saveImage(image));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
