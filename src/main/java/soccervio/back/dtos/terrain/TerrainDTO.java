@@ -1,7 +1,7 @@
 package soccervio.back.dtos.terrain;
 
 import javax.validation.constraints.NotBlank;
-import java.sql.Time;
+import java.time.LocalTime;
 
 public class TerrainDTO {
 
@@ -18,10 +18,10 @@ public class TerrainDTO {
     private String adresse;
 
     @NotBlank
-    private Time heureO;
+    private LocalTime heureO;
 
     @NotBlank
-    private Time heureF;
+    private LocalTime heureF;
 
     @NotBlank
     private String description;
@@ -60,11 +60,11 @@ public class TerrainDTO {
         return adresse;
     }
 
-    public Time getHeureO() {
+    public LocalTime getHeureO() {
         return heureO;
     }
 
-    public Time getHeureF() {
+    public LocalTime getHeureF() {
         return heureF;
     }
 

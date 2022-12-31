@@ -2,10 +2,11 @@ package soccervio.back.dtos.user;
 
 import soccervio.back.entities.Image;
 
-import soccervio.back.entities.Column;
+
+import javax.validation.constraints.NotBlank;
 
 public class UserDTO {
-	@NoyBlank
+	@NotBlank
     private String username;
 
     @NotBlank

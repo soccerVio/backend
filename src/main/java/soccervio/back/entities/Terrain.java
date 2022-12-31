@@ -1,7 +1,7 @@
 package soccervio.back.entities;
 
 import javax.persistence.*;
-import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -20,8 +20,8 @@ public class Terrain {
     private String description;
     private Date dateCreation;
     private String adresse;
-    private Time heureO;
-    private Time heureF;
+    private LocalTime heureO;
+    private LocalTime heureF;
     private float prixHr;
     private int nbrJoueur;
     private boolean avecDouche;
@@ -33,7 +33,7 @@ public class Terrain {
     }
 
     public Terrain(long id, String titre, Set<Image> images, float longitude, float latitude,
-                   String description, Date dateCreation, String adresse, Time heureO, Time heureF,
+                   String description, Date dateCreation, String adresse, LocalTime heureO, LocalTime heureF,
                    float prixHr, int nbrJoueur, boolean avecDouche, boolean assure, User proprietaire) {
         this.id = id;
         this.titre = titre;
@@ -116,19 +116,19 @@ public class Terrain {
         this.adresse = adresse;
     }
 
-    public Time getHeureO() {
+    public LocalTime getHeureO() {
         return heureO;
     }
 
-    public void setHeureO(Time heureO) {
+    public void setHeureO(LocalTime heureO) {
         this.heureO = heureO;
     }
 
-    public Time getHeureF() {
+    public LocalTime getHeureF() {
         return heureF;
     }
 
-    public void setHeureF(Time heureF) {
+    public void setHeureF(LocalTime heureF) {
         this.heureF = heureF;
     }
 
