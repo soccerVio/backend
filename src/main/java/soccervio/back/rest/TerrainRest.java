@@ -31,8 +31,13 @@ public class TerrainRest {
         return terrainService.getTerrains();
     }
 
+    @GetMapping("/proprietaire/{idProp}")
+    public List<Terrain> getTerrainsByProp(@PathVariable long idProp) {
+        return terrainService.getTerrainsByProp(idProp);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Terrain> getTerrainById(@PathVariable long id) {
+    public Terrain getTerrainById(@PathVariable long id) {
         return terrainService.getTerrainById(id);
     }
 

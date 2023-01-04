@@ -15,11 +15,15 @@ spring:
         multipart:
             max-file-size: 100MB
             max-request-size: 100MB
+server:
+    port: 8081
+
 jwt:
     secretKey: SecretKey12345
+
 images:
     uploads: target/classes/static/uploads
 
 app:
     root:
-        backend: http://localhost:8080
+        backend: http://localhost:8081
