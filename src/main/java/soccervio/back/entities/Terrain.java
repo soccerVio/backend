@@ -1,6 +1,7 @@
 package soccervio.back.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -13,10 +14,10 @@ public class Terrain {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String titre;
-    @ElementCollection
-    @CollectionTable(name="images", joinColumns=@JoinColumn(name="terrain_id", referencedColumnName = "id"))
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "path")
-    private List<String> images;
+    @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "terrain_id"))
+    private Set<String> images = new java.util.LinkedHashSet<>();
     private float longitude;
     private float latitude;
     @Lob
@@ -35,7 +36,7 @@ public class Terrain {
     public Terrain() {
     }
 
-    public Terrain(long id, String titre, List<String> images, float longitude,
+    public Terrain(long id, String titre, Set<String> images, float longitude,
                    float latitude, String description, Date dateCreation, String adresse,
                    LocalTime heureO, LocalTime heureF, float prixHr, int nbrJoueur,
                    boolean avecDouche, boolean assure, User proprietaire) {
@@ -72,11 +73,11 @@ public class Terrain {
         this.titre = titre;
     }
 
-    public List<String> getImages() {
+    public Set<String> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(Set<String> images) {
         this.images = images;
     }
 

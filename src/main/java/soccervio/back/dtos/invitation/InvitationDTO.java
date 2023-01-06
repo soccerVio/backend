@@ -4,43 +4,28 @@ import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
-import soccervio.back.entities.User;
-
 public class InvitationDTO {
+
+
     @NotBlank
-	private Long id;
+	private long invitantId;
+
     @NotBlank
-	private User invitant;
-    @NotBlank
-	private List<User> invite ;
-	 
-    
-    public Long getId() {
-		return id;
+	private List<Long> inviteIds ;
+
+
+	@NotBlank
+	private long annonceId;
+
+	public long getInvitantId() {
+		return invitantId;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public List<Long> getInviteIds() {
+		return inviteIds;
 	}
-	public User getInvitant() {
-		return invitant;
+
+	public long getAnnonceId() {
+		return annonceId;
 	}
-	public void setInvitant(User invitant) {
-		this.invitant = invitant;
-	}
-	public List<User> getInvite() {
-		return invite;
-	}
-	public void setInvite(List<User> invite) {
-		this.invite = invite;
-	}
-	
-   
-
-
-
-
-
-
-
-
 }

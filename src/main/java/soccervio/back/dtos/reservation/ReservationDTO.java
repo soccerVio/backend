@@ -1,10 +1,11 @@
 package soccervio.back.dtos.reservation;
 
-import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.constraints.NotBlank;
 
+<<<<<<< HEAD
 /*import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -59,37 +60,61 @@ public class ReservationDTO {
 	public void setHeureDebut(Time heureDebut) {
 		this.heureDebut = heureDebut;
 	}
+=======
+public class ReservationDTO {
+>>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 
-	public String getGendreJoueurs() {
-		return gendreJoueurs;
-	}
-	public void setGendreJoueurs(String gendreJoueurs) {
-		this.gendreJoueurs = gendreJoueurs;
-	}
-	public boolean getOuverte() {
-		return Ouverte;
-	}
-	public void setOuverte(boolean ouverte) {
-		Ouverte = ouverte;
-	}
-	public int getNbrJoueur() {
-		return nbrJoueur;
-	}
-	public void setNbrJoueur(int nbrJoueur) {
-		this.nbrJoueur = nbrJoueur;
-	}
+	@NotBlank
+	private Date date;
+
+	@NotBlank
+	private String genre;
+
+    @NotBlank
+    private String heure;
+	@NotBlank
+	private int nbrJoueurManq;
+
+	@NotBlank
+	private long idTerrain ;
+
+	private List<Long> idJoueurs;
+
+    @NotBlank
+    private long reservePar;
+
+
 	public Date getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+
+	public String getGenre() {
+		return genre;
+	}
+<<<<<<< HEAD
+
+
+
+=======
+>>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
+
+	public String getHeure() {
+		return heure;
 	}
 
+	public long getIdTerrain() {
+		return idTerrain;
+	}
 
+	public List<Long> getIdJoueurs() {
+		return idJoueurs;
+	}
 
+	public int getNbrJoueurManq() {
+		return nbrJoueurManq;
+	}
 
-
-
-
-
+	public long getReservePar() {
+		return reservePar;
+	}
 }

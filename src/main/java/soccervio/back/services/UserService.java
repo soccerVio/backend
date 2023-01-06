@@ -82,7 +82,21 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseEntity<List<User>> findByNomCompletLike(String nomComplet) {
+<<<<<<< HEAD
         return new ResponseEntity<>(userDao.findByNomCompletContainsIgnoreCase(nomComplet), HttpStatus.valueOf(200));
+=======
+        List<User> proprietaires =
+                userDao
+                        .findByNomCompletContainsIgnoreCase(nomComplet)
+                        .stream()
+                        .filter(user -> {
+                            boolean isJoueur = false;
+                            for (Role r : user.getAuthorities())
+                                isJoueur = r.getAuthority().equals("ROLE_JOUEUR");
+                            return isJoueur;
+                        }).toList();
+        return new ResponseEntity<>(proprietaires, HttpStatus.valueOf(200)) ;
+>>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
     }
 
     public User getUserById(long id) {

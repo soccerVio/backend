@@ -1,9 +1,7 @@
 package soccervio.back.entities;
 
 import javax.persistence.*;
-import java.sql.Time;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 @Entity(name = "annonces")
 public class Annonce {
@@ -14,26 +12,27 @@ public class Annonce {
 
     @Lob
     private String description;
-    private Date dateFermeture;
-    private Time heureFermeture;
-    private boolean ferme;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "joueurs_annonces",
-            joinColumns = @JoinColumn(name = "annonce_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "joueur_id", referencedColumnName = "id"))
-    private List<User> joueurs;
+    private boolean ferme = false;
+
+    @OneToOne
+    private Reservation reservation;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "participants_annonces",
+            joinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "annonce_id", referencedColumnName = "id"))
+    private Set<User> participants;
 
     public Annonce() {
     }
 
-    public Annonce(long id, String description, Date dateFermeture, Time heureFermeture, boolean ferme, List<User> joueurs) {
+    public Annonce(long id, String description, boolean ferme, Reservation reservation, Set<User> participants) {
         this.id = id;
         this.description = description;
-        this.dateFermeture = dateFermeture;
-        this.heureFermeture = heureFermeture;
         this.ferme = ferme;
-        this.joueurs = joueurs;
+        this.reservation = reservation;
+        this.participants = participants;
     }
 
     public long getId() {
@@ -52,22 +51,6 @@ public class Annonce {
         this.description = description;
     }
 
-    public Date getDateFermeture() {
-        return dateFermeture;
-    }
-
-    public void setDateFermeture(Date dateFermeture) {
-        this.dateFermeture = dateFermeture;
-    }
-
-    public Time getHeureFermeture() {
-        return heureFermeture;
-    }
-
-    public void setHeureFermeture(Time heureFermeture) {
-        this.heureFermeture = heureFermeture;
-    }
-
     public boolean isFerme() {
         return ferme;
     }
@@ -76,11 +59,19 @@ public class Annonce {
         this.ferme = ferme;
     }
 
-    public List<User> getJoueurs() {
-        return joueurs;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setJoueurs(List<User> joueurs) {
-        this.joueurs = joueurs;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    public Set<User> getParticipants() {
+        return participants;
+    }
+
+    public void setParticipants(Set<User> participants) {
+        this.participants = participants;
     }
 }

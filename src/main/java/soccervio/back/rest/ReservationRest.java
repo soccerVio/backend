@@ -1,53 +1,52 @@
 package soccervio.back.rest;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import soccervio.back.constants.ApiContant;
+import soccervio.back.dtos.reservation.ReservationDTO;
 import soccervio.back.entities.Reservation;
 import soccervio.back.services.ReservationService;
 
+@RestController
+@RequestMapping(ApiContant.BASE_URL + "/reservations")
 public class ReservationRest {
-    private ReservationService reservationService;
-    
-    
-    @PostMapping(value = "/ajout", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Object> ajoutReservation( @RequestParam String reservation) {
-        try {
-			return reservationService.ajoutReservation(reservation);
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+    private final ReservationService reservationService;
+
+    public ReservationRest(ReservationService reservationService) {
+        this.reservationService = reservationService;
     }
 
-    
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteReservation(@PathVariable long id) {
-        return reservationService.deleteReservation(id);
-    }
-    
-    @GetMapping
-    public ResponseEntity<List<Reservation>> getReservations() {
-        return reservationService.getReservations();
+    @GetMapping("/{date}/{idTerrain}")
+    public List<LocalTime> getByDateAndTerrain(@PathVariable Date date, @PathVariable long idTerrain) {
+        return reservationService.getByDateAndTerrain(date, idTerrain);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Reservation> getReservationById(@PathVariable long id) {
-        return reservationService.getReservationById(id);
+    @PostMapping("/add")
+    public ResponseEntity<Reservation> ajoutReservation(@RequestBody ReservationDTO reservationDTO) {
+        return reservationService.ajoutReservation(reservationDTO);
+    }
+
+    @GetMapping("/joueur/{idJoueur}")
+    public ResponseEntity<List<Reservation>> getReservationsOfJoueur(@PathVariable long idJoueur) {
+        return reservationService.getReservationsOfJoueur(idJoueur);
+    }
+
+    @GetMapping("/proprietaire/{idProp}")
+    public ResponseEntity<List<Reservation>> getReservationsOfProprietaire(@PathVariable long idProp) {
+        return reservationService.getReservationsOfProprietaire(idProp);
+    }
+
+    @DeleteMapping("/delete/{idResrvation}")
+    public ResponseEntity<String> annulerReservation(@PathVariable long idResrvation) {
+        return reservationService.annulerReservation(idResrvation);
     }
 }

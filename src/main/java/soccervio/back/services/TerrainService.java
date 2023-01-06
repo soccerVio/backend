@@ -10,11 +10,13 @@ import org.springframework.web.multipart.MultipartFile;
 import soccervio.back.dao.TerrainDao;
 import soccervio.back.dtos.terrain.TerrainDTO;
 import soccervio.back.entities.Terrain;
+import soccervio.back.entities.User;
 import soccervio.back.mappers.TerrainMapper;
 import soccervio.back.utils.ImageUtil;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class TerrainService {
@@ -42,13 +44,13 @@ public class TerrainService {
             throw new RuntimeException(e);
         }
         Terrain t = terrainMapper.fromTerrainDto(terrainDTO);
-        List<String> imagesList = Arrays.stream(images).map(image -> {
+        Set<String> imagesList = Arrays.stream(images).map(image -> {
             try {
                 return imageUtil.saveImage(image);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }).toList();
+        }).collect(Collectors.toSet());
         t.setImages(imagesList);
         t.setProprietaire(userService.getUserById(terrainDTO.getProprietaire()));
         return new ResponseEntity<>(terrainDao.save(t), HttpStatus.valueOf(201));
@@ -58,14 +60,21 @@ public class TerrainService {
         return new ResponseEntity<>(terrainDao.findAll(), HttpStatus.valueOf(200));
     }
 
-    public ResponseEntity<Terrain> getTerrainById(long id){
-        return new ResponseEntity<>(terrainDao.findById(id).orElse(null), HttpStatus.valueOf(200));
+    public List<Terrain> getTerrainsByProp(long idProp){
+        User proprietaire = userService.getUserById(idProp);
+        return terrainDao.findByProprietaire(proprietaire);
+    }
+
+    public Terrain getTerrainById(long id){
+        return terrainDao.findById(id).orElse(null);
     }
 
     public ResponseEntity<Object> modifierTerrain(Optional<MultipartFile[]> images, String terrain){
         Terrain t = null;
         try {
-            t = new ObjectMapper().readValue(terrain, Terrain.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            t = objectMapper.readValue(terrain, Terrain.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -82,7 +91,7 @@ public class TerrainService {
         if(images.isPresent()){
             MultipartFile[] imagesList = images.get();
             if(imagesList.length > 0){
-                List<String> imageSet = updatedTerrain.getImages();
+                Set<String> imageSet = updatedTerrain.getImages();
                 Arrays.stream(imagesList).forEach(image -> {
                     try {
                         imageSet.add(imageUtil.saveImage(image));
@@ -118,7 +127,15 @@ public class TerrainService {
     }
 
     public ResponseEntity<String> deleteTerrain(long id){
+        Terrain terrain = getTerrainById(id);
         terrainDao.deleteById(id);
+        terrain.getImages().forEach(image ->{
+            try {
+                imageUtil.deleteImage(image);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         return new ResponseEntity<>("Terrain supprimé avec succès", HttpStatus.valueOf(200));
     }
 

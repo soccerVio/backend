@@ -1,17 +1,20 @@
 package soccervio.back.mappers;
 
+import org.springframework.stereotype.Component;
 import soccervio.back.dtos.reservation.ReservationDTO;
 import soccervio.back.entities.Reservation;
 
+import java.time.LocalTime;
+
+@Component
 public class ReservationMapper {
+
 	  public Reservation fromReservationDto(ReservationDTO reservationDTO){
 		  Reservation reservation = new Reservation();
-		  reservation.setGendreJoueurs(reservationDTO.getGendreJoueurs());
-		  reservation.setNbrJoueur( reservationDTO.getNbrJoueur());
-		  reservation.setHeureDebut(reservationDTO.getHeureDebut());
-		  reservation.setOuverte(reservationDTO.getOuverte());
-		  reservation.setTerrain(reservationDTO.getTerrain());
-		  reservation.setReservePar(reservationDTO.getReservePar());
+		  reservation.setGenre(reservationDTO.getGenre());
+		  reservation.setNbrJoueurManq(reservationDTO.getNbrJoueurManq());
+		  reservation.setHeure(LocalTime.parse(reservationDTO.getHeure()));
 		  reservation.setDate(reservationDTO.getDate());
 		  return reservation;
-	  }}
+	  }
+}

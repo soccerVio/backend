@@ -53,7 +53,14 @@ public class ImageUtil {
         return newImagePath;
     }
 
-    public void deleteImage(String uploadDir, String imageName) throws IOException {
+    public void deleteImage(String imageUrl) throws IOException {
+        String uploadDir = environment.getProperty("images.uploads");
+        String stringToOmit =
+                environment.getProperty("app.root.backend")
+                + File.separator
+                + "uploads"
+                + File.separator;
+        String imageName =  imageUrl.substring(stringToOmit.length());
         Path uploadPath = Paths.get(uploadDir);
         Path filePath = uploadPath.resolve(imageName);
         Files.deleteIfExists(filePath);
