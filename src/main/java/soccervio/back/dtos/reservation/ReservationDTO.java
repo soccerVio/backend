@@ -5,19 +5,19 @@ import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
-import lombok.AllArgsConstructor;
+/*import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
+import lombok.ToString;*/
 import soccervio.back.entities.Terrain;
 import soccervio.back.entities.User;
-@Getter
+/*@Getter
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor*/
 public class ReservationDTO {
     @NotBlank
 	private long id;
@@ -26,7 +26,7 @@ public class ReservationDTO {
     @NotBlank
     private Date  date ;
 	@NotBlank
-    private String gendreJoueurs ; 
+    private String gendreJoueurs ;
     @NotBlank
     private boolean Ouverte;
     @NotBlank
@@ -84,7 +84,7 @@ public class ReservationDTO {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-    
+
 
 
 

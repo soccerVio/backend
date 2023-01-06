@@ -1,9 +1,9 @@
 package soccervio.back.services;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import soccervio.back.dao.UserDao;
 import soccervio.back.dtos.user.SigninUser;
 import soccervio.back.dtos.user.SignupUser;
@@ -43,19 +44,19 @@ public class UserService implements UserDetailsService {
         this.jwtUtil = jwtUtil;
     }
 
-    public ResponseEntity<String> signup(SignupUser signupUser){
+    public ResponseEntity<String> signup(SignupUser signupUser) {
         if (userDao.existsByUsernameOrEmail(signupUser.getUsername(), signupUser.getEmail()))
             return new ResponseEntity<>("Username ou email existe déja", HttpStatus.valueOf(405));
 
-        if(!signupUser.getTypeCompte().equals("ROLE_JOUEUR")
-                && !signupUser.getTypeCompte().equals("ROLE_PROPRIETAIRE"))
+        if (!signupUser.getTypeCompte().equals("ROLE_JOUEUR")
+            && !signupUser.getTypeCompte().equals("ROLE_PROPRIETAIRE"))
             return new ResponseEntity<>("Le type du compte est incorrect", HttpStatus.valueOf(406));
 
         User user = userMapper.fromSignupUser(signupUser);
         user.setPassword(passwordEncoder.encode(signupUser.getPassword()));
 
         Role role;
-        if(roleService.existsByAuthority(signupUser.getTypeCompte()))
+        if (roleService.existsByAuthority(signupUser.getTypeCompte()))
             role = roleService.findByAuthority(signupUser.getTypeCompte());
         else
             role = new Role(signupUser.getTypeCompte());
@@ -65,11 +66,11 @@ public class UserService implements UserDetailsService {
         return new ResponseEntity<>("Utilisateur crée avec succès", HttpStatus.valueOf(201));
     }
 
-    public ResponseEntity<Object> signin(SigninUser signinUser){
-        try{
+    public ResponseEntity<Object> signin(SigninUser signinUser) {
+        try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(signinUser.getUsername(), signinUser.getPassword()));
-        }catch (BadCredentialsException e){
+                new UsernamePasswordAuthenticationToken(signinUser.getUsername(), signinUser.getPassword()));
+        } catch (BadCredentialsException e) {
             return new ResponseEntity<>("Bad credentials", HttpStatus.valueOf(403));
         }
         User user = loadUserByUsername(signinUser.getUsername());
@@ -81,40 +82,51 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseEntity<List<User>> findByNomCompletLike(String nomComplet) {
-        return new ResponseEntity<>(userDao.findByNomCompletContainsIgnoreCase(nomComplet), HttpStatus.valueOf(200)) ;
+        return new ResponseEntity<>(userDao.findByNomCompletContainsIgnoreCase(nomComplet), HttpStatus.valueOf(200));
     }
 
-    public User getUserById(long id){
+    public User getUserById(long id) {
         return userDao.findById(id);
     }
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
-        if(user == null)
+        if (user == null)
             throw new UsernameNotFoundException("Username not found");
         return user;
     }
-   
-    
-    
-    public ResponseEntity<Object> updateAccount(long userId , UserDTO userDto){
-    	User currentUser =  userDao.findById(userId);
-    	if (currentUser == null) {
-    		throw new UsernameNotFoundException("user not found");
-    	}
-    		currentUser.setEmail(userDto.getEmail());
-    		currentUser.setNomComplet(userDto.getNomComplet());
-    		currentUser.setUsername(userDto.getUsername());
-    		currentUser.setNumTel(userDto.getNumTel());
-    		currentUser. setPassword(passwordEncoder.encode(userDto.getPassword()));
-    		//Image image = new Image();
-        	//image.setContent(userDto.getImage().getContent());
-        	//image.setType(userDto.getImage().getType());
-        	//currentUser.setImage(image);
-    		User updatedUser = userDao.save(currentUser);
-    	return new ResponseEntity<>(updatedUser, HttpStatus.ACCEPTED);
+
+    public ResponseEntity<Object> updateAccount(long userId, UserDTO userDto) {
+        User currentUser = userDao.findById(userId);
+        if (currentUser == null) {
+            throw new UsernameNotFoundException("user not found");
+        }
+        currentUser.setEmail(userDto.getEmail());
+        currentUser.setNomComplet(userDto.getNomComplet());
+        currentUser.setUsername(userDto.getUsername());
+        currentUser.setNumTel(userDto.getNumTel());
+       // currentUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        //Image image = new Image();
+        //image.setContent(userDto.getImage().getContent());
+        //image.setType(userDto.getImage().getType());
+        //currentUser.setImage(image);
+        User updatedUser = userDao.save(currentUser);
+        return new ResponseEntity<>(updatedUser, HttpStatus.ACCEPTED);
     }
-    
+
+    public ResponseEntity<Object> ChangePassword(long userId, String currentPassword, String newPassword) {
+        User user = userDao.findById(userId);
+        if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userDao.save(user);
+        }
+        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+    }
+   /* public ResponseEntity<Object> ChangeImage(long userId, Optional<MultipartFile[]> image) {
+        User user = userDao.findById(userId);
+
+        return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
+    }*/
 }
 

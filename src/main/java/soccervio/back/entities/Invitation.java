@@ -2,16 +2,18 @@ package soccervio.back.entities;
 
 import java.util.List;
 
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
+@Entity
 public class Invitation {
- 
-private Long id;
-@OneToOne
-private User invitant;
-@OneToMany
-private List<User> invite ;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @OneToOne
+    private User invitant;
+    @OneToMany
+    private List<User> invite ;
 
 
 public Long getId() {
@@ -33,14 +35,14 @@ public void setInvite(List<User> invite) {
 	this.invite = invite;
 }
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 }

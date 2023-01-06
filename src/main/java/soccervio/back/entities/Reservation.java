@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+/*
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -22,9 +23,9 @@ import lombok.ToString;
 @Setter
 @ToString
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor*/
 @Entity
-@Data
+//@Data
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,13 +34,13 @@ public class Reservation {
     private Date date;
 
     private boolean ouverte;
-    private String gendreJoueurs ; 
+    private String gendreJoueurs ;
     private int nbrJoueur;
     @OneToOne
     private Terrain terrain;
     @ManyToOne
     private User reservePar;
-    
+
     public long getId() {
 		return id;
 	}
@@ -88,5 +89,5 @@ public class Reservation {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	
+
 }
