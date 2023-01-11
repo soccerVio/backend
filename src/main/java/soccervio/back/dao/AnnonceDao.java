@@ -11,4 +11,4 @@ public interface AnnonceDao extends JpaRepository<Annonce, Long> {
     void deleteByReservation(Reservation reservation);
 
     Annonce findByReservation(Reservation reservation);
-}
+}  

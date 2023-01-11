@@ -16,7 +16,7 @@ import java.util.Set;
 @Service
 public class AnnonceService {
 
-    private final AnnonceDao annonceDao;
+    private final  AnnonceDao annonceDao;
 
     @Autowired
     private ReservationService reservationService;
@@ -40,7 +40,29 @@ public class AnnonceService {
     public ResponseEntity<List<Annonce>> getAnnonces(){
         return new ResponseEntity<>(annonceDao.findAll(), HttpStatus.valueOf(200));
     }
-
+    public ResponseEntity<List<Annonce>> annoncesJoueur(long idUser){
+    	List<Annonce> annonces ;
+    	List<Reservation>reservations =reservationService.getReservationsOfJoueur(idUser);
+    	for(Resevervation reservation : resevations) {
+    		 Annone annonce = annonceDao.findByReservation(reservation);
+    		 if(annonce.getParticipants().length>0) { annonces.add(annonce);} 
+    	}
+    	return new ResponseEntity<>(annonces,HttpStatus.valueOf(200));
+    }
+    
+    public ResponseEntity<String> refuserParticipation(long idJoueur,long idAnnonce){
+    	 Annone annonce = annonceDao.findById(idAnnonce);
+    	 User joueur= userService.getUserById(idJoueur);
+    	 annonce.getParticipants().remove(joueur);
+         return new ResponseEntity<>("refus avec succès", HttpStatus.valueOf(200));
+    }
+    public ResponseEntity<String> accepterParticipation(long idJoueur,long idAnnonce){
+   	 Annone annonce = annonceDao.findById(idAnnonce);
+   	 User joueur= userService.getUserById(idJoueur);
+   	 annonce.getParticipants().remove(joueur);
+   	 annonce.getReservation().getJoueurs().add(joueur);
+        return new ResponseEntity<>("Acceptation avec succès", HttpStatus.valueOf(200));
+   }
     public ResponseEntity<String> participerAnnonce(long idParticipant, long idAnnonce){
         Annonce annonce = annonceDao.findById(idAnnonce).get();
         Set<User> participants = annonce.getParticipants();

@@ -1,31 +1,20 @@
-package soccervio.back.dtos.invitation;
-
-import java.util.List;
+package soccervio.back.dtos.annoce;
 
 import javax.validation.constraints.NotBlank;
 
-public class InvitationDTO {
-
-
-    @NotBlank
-	private long invitantId;
+public class AnnonceDTO {
 
     @NotBlank
-	private List<Long> inviteIds ;
+    private String description;
 
+    @NotBlank
+    private long idReservation;
 
-	@NotBlank
-	private long annonceId;
+    public String getDescription() {
+        return description;
+    }
 
-	public long getInvitantId() {
-		return invitantId;
-	}
-
-	public List<Long> getInviteIds() {
-		return inviteIds;
-	}
-
-	public long getAnnonceId() {
-		return annonceId;
-	}
+    public long getIdReservation() {
+        return idReservation;
+    }
 }
