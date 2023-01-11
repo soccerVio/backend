@@ -4,35 +4,9 @@ import java.time.LocalTime;
 import java.util.Date;
 import java.util.Set;
 
-<<<<<<< HEAD
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-/*
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor*/
-@Entity
-//@Data
-=======
 import javax.persistence.*;
 
 @Entity(name = "reservations")
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 public class Reservation {
 
     @Id
@@ -43,27 +17,17 @@ public class Reservation {
 
     private Date date;
 
-<<<<<<< HEAD
-    private boolean ouverte;
-    private String gendreJoueurs ;
-    private int nbrJoueur;
-    @OneToOne
-=======
 
     private String genre;
 
     private int nbrJoueurManq;
 
     @ManyToOne
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
     private Terrain terrain;
 
     @ManyToOne
     private User reservePar;
 
-<<<<<<< HEAD
-    public long getId() {
-=======
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "joueurs_match",
 			joinColumns = @JoinColumn(name = "reservation_id", referencedColumnName = "id"),
@@ -86,7 +50,6 @@ public class Reservation {
 	}
 
 	public long getId() {
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 		return id;
 	}
 
@@ -110,8 +73,6 @@ public class Reservation {
 		this.date = date;
 	}
 
-<<<<<<< HEAD
-=======
 	public String getGenre() {
 		return genre;
 	}
@@ -151,5 +112,4 @@ public class Reservation {
 	public void setJoueurs(Set<User> joueurs) {
 		this.joueurs = joueurs;
 	}
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 }

@@ -5,18 +5,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-<<<<<<< HEAD
-@Entity
-public class Invitation {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @OneToOne
-    private User invitant;
-    @OneToMany
-    private List<User> invite ;
-=======
 @Entity(name = "invitations")
 public class Invitation {
 
@@ -32,24 +20,11 @@ public class Invitation {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "invitation")
 	private Set<UserInvitation> invites;
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 
 
 	public Invitation() {
 	}
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-=======
 	public Invitation(long id, User invitant, Annonce annonce, Set<UserInvitation> invites) {
 		this.id = id;
 		this.invitant = invitant;
@@ -88,5 +63,4 @@ public class Invitation {
 	public void setInvites(Set<UserInvitation> invites) {
 		this.invites = invites;
 	}
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
 }
