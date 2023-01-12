@@ -3,6 +3,7 @@ package soccervio.back.entities;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -32,6 +33,8 @@ public class Terrain {
     private boolean assure;
     @ManyToOne
     private User proprietaire;
+    @OneToMany(mappedBy = "terrain")
+    private Collection<Reservation> reservations;
 
     public Terrain() {
     }
@@ -175,5 +178,9 @@ public class Terrain {
 
     public void setProprietaire(User proprietaire) {
         this.proprietaire = proprietaire;
+    }
+
+    public Collection<Reservation> getReservations() {
+       return reservations;
     }
 }

@@ -8,6 +8,8 @@ import soccervio.back.constants.ApiContant;
 import soccervio.back.entities.Terrain;
 import soccervio.back.services.TerrainService;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,8 +58,8 @@ public class TerrainRest {
         return terrainService.deleteTerrain(id);
     }
     @GetMapping("/searchbyPosition")
-    public ResponseEntity<List<Terrain>> searchByPosition(@PathVariable float longitude1,@PathVariable float latitude1, @PathVariable float longitude2,@PathVariable float latitude2 ) {
-        return (ResponseEntity<List<Terrain>>) terrainService.searchTerrainsByPosition(longitude1,latitude1,longitude2,latitude2);
+    public List<float[]> getPositionsNear(@PathVariable float latitude, @PathVariable float longitude,@PathVariable Date dateDebut,@PathVariable Date dateFin, @PathVariable LocalTime heurDebut, @PathVariable LocalTime heureFin){
+        return  terrainService.getPositionsNear(latitude,longitude,dateDebut,dateFin,heurDebut,heureFin);
     }
 
 }
