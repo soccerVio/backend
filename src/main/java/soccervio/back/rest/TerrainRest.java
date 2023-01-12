@@ -59,4 +59,5 @@ public class TerrainRest {
     public ResponseEntity<List<Terrain>> searchByPosition(@PathVariable float longitude1,@PathVariable float latitude1, @PathVariable float longitude2,@PathVariable float latitude2 ) {
         return (ResponseEntity<List<Terrain>>) terrainService.searchTerrainsByPosition(longitude1,latitude1,longitude2,latitude2);
     }
+
 }

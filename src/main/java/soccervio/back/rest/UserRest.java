@@ -33,6 +33,10 @@ public class UserRest {
         return userService.signin(signinUser);
     }
 
+    @GetMapping("id/{id}")
+    public User getUserById(@PathVariable long id) {
+        return userService.getUserById(id);
+    }
     @GetMapping("{nomComplet}")
     public ResponseEntity<List<User>> findByNomCompletLike(@PathVariable String nomComplet) {
         return userService.findByNomCompletLike(nomComplet);
@@ -41,5 +45,5 @@ public class UserRest {
     public ResponseEntity<Object> updateAccount(@PathVariable Long id ,@RequestBody UserDTO userDTO) {
         return  userService.updateAccount(id, userDTO);
     }
-    
+
 }

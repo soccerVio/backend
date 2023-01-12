@@ -82,9 +82,7 @@ public class UserService implements UserDetailsService {
     }
 
     public ResponseEntity<List<User>> findByNomCompletLike(String nomComplet) {
-<<<<<<< HEAD
-        return new ResponseEntity<>(userDao.findByNomCompletContainsIgnoreCase(nomComplet), HttpStatus.valueOf(200));
-=======
+
         List<User> proprietaires =
                 userDao
                         .findByNomCompletContainsIgnoreCase(nomComplet)
@@ -96,7 +94,6 @@ public class UserService implements UserDetailsService {
                             return isJoueur;
                         }).toList();
         return new ResponseEntity<>(proprietaires, HttpStatus.valueOf(200)) ;
->>>>>>> aa2f69eb2dc4412e99e77f9f23ca44764b575fe9
     }
 
     public User getUserById(long id) {

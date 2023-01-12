@@ -32,22 +32,23 @@ public class AnnonceRest {
     public ResponseEntity<String> participerAnnonce(@PathVariable long idUser,@PathVariable long idAnnonce) {
         return annonceService.participerAnnonce(idUser, idAnnonce);
     }
-}
+
  @PutMapping("/annoncesJoueur/{idUser}")
 public ResponseEntity<List<Annonce>> annoncesJoueur(@PathVariable long idUser) {
     return annonceService.annoncesJoueur(idUser);
 }
- 
+
  @PutMapping("/refuserParticipation/{idJoueur}/{idAnnonce}")
  public ResponseEntity<String> refuserParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
-     return annonceService.refuserParticipation(idUser, idAnnonce);
+     return annonceService.refuserParticipation(idJoueur, idAnnonce);
  }
+
+    @PutMapping("/accepterParticipation/{idJoueur}/{idAnnonce}")
+    public ResponseEntity<String> accepterParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
+        return annonceService.accepterParticipation(idJoueur, idAnnonce);
+    }
 }
 
-@PutMapping("/accepterParticipation/{idJoueur}/{idAnnonce}")
-public ResponseEntity<String> accepterParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
-    return annonceService.accepterParticipation(idUser, idAnnonce);
-}
-}
+
 
 

@@ -36,7 +36,7 @@ public class ReservationRest {
     }
 
     @GetMapping("/joueur/{idJoueur}")
-    public ResponseEntity<List<Reservation>> getReservationsOfJoueur(@PathVariable long idJoueur) {
+    public List<Reservation> getReservationsOfJoueur(@PathVariable long idJoueur) {
         return reservationService.getReservationsOfJoueur(idJoueur);
     }
 

@@ -92,9 +92,9 @@ public class ReservationService {
 		return reservationDao.findById(id).orElse(null);
 	}
 
-	public ResponseEntity<List<Reservation>> getReservationsOfJoueur(long idJoueur){
+	public List<Reservation> getReservationsOfJoueur(long idJoueur){
 		User joueur = userService.getUserById(idJoueur);
-		return new ResponseEntity<>(reservationDao.findByReservePar(joueur), HttpStatus.ACCEPTED);
+		return reservationDao.findByReservePar(joueur);
 	}
 
 	public ResponseEntity<List<Reservation>> getReservationsOfProprietaire(long idProp){

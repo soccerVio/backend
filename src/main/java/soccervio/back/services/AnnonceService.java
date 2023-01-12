@@ -10,6 +10,7 @@ import soccervio.back.entities.Annonce;
 import soccervio.back.entities.Reservation;
 import soccervio.back.entities.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -41,23 +42,23 @@ public class AnnonceService {
         return new ResponseEntity<>(annonceDao.findAll(), HttpStatus.valueOf(200));
     }
     public ResponseEntity<List<Annonce>> annoncesJoueur(long idUser){
-    	List<Annonce> annonces ;
-    	List<Reservation>reservations =reservationService.getReservationsOfJoueur(idUser);
-    	for(Resevervation reservation : resevations) {
-    		 Annone annonce = annonceDao.findByReservation(reservation);
-    		 if(annonce.getParticipants().length>0) { annonces.add(annonce);} 
+    	List<Annonce> annonces = new ArrayList<>();
+    	List<Reservation> reservations =reservationService.getReservationsOfJoueur(idUser);
+    	for(Reservation reservation : reservations) {
+    		 Annonce annonce = annonceDao.findByReservation(reservation);
+    		 if(annonce.getParticipants().size()>0) { annonces.add(annonce);}
     	}
     	return new ResponseEntity<>(annonces,HttpStatus.valueOf(200));
     }
-    
+
     public ResponseEntity<String> refuserParticipation(long idJoueur,long idAnnonce){
-    	 Annone annonce = annonceDao.findById(idAnnonce);
+    	 Annonce annonce = annonceDao.findById(idAnnonce).get();
     	 User joueur= userService.getUserById(idJoueur);
     	 annonce.getParticipants().remove(joueur);
          return new ResponseEntity<>("refus avec succès", HttpStatus.valueOf(200));
     }
     public ResponseEntity<String> accepterParticipation(long idJoueur,long idAnnonce){
-   	 Annone annonce = annonceDao.findById(idAnnonce);
+   	 Annonce annonce = annonceDao.findById(idAnnonce).get();
    	 User joueur= userService.getUserById(idJoueur);
    	 annonce.getParticipants().remove(joueur);
    	 annonce.getReservation().getJoueurs().add(joueur);

@@ -15,6 +15,8 @@ import soccervio.back.mappers.TerrainMapper;
 import soccervio.back.utils.ImageUtil;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -144,4 +146,12 @@ public class TerrainService {
     public  List<Terrain> searchTerrainsByPosition(float longitude1, float latitude1, float longitude2, float latitude2) {
           return terrainDao.findByPositionBetween(longitude1, latitude1, longitude2, latitude2);
     }
-}
+
+    public List<Terrain> searchTerrainsBetweenHoures(List<Terrain> terrains, LocalTime startTime, LocalTime endTime) {
+        return terrains.stream()
+            .filter(terrain -> terrain.getHeureO().isAfter(startTime) && terrain.getHeureF().isBefore(endTime))
+            .collect(Collectors.toList());
+
+    }
+
+    }
