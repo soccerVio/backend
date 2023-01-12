@@ -109,4 +109,8 @@ public class ReservationService {
 		reservationDao.deleteById(idResrvation);
 		return new ResponseEntity<>("reservation annulé ave succès", HttpStatus.ACCEPTED);
 	}
+
+	public void saveReservation(Reservation reservation){
+		reservationDao.save(reservation);
+	}
 }

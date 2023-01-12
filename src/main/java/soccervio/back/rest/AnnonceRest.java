@@ -19,7 +19,7 @@ public class AnnonceRest {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Annonce> ajoutAnnnonce(@RequestBody AnnonceDTO annonceDTO) {
+    public ResponseEntity<Object> ajoutAnnnonce(@RequestBody AnnonceDTO annonceDTO) {
         return annonceService.ajoutAnnnonce(annonceDTO);
     }
 
@@ -33,15 +33,15 @@ public class AnnonceRest {
         return annonceService.participerAnnonce(idUser, idAnnonce);
     }
 
- @PutMapping("/annoncesJoueur/{idUser}")
-public ResponseEntity<List<Annonce>> annoncesJoueur(@PathVariable long idUser) {
-    return annonceService.annoncesJoueur(idUser);
-}
+    @GetMapping("/annoncesJoueur/{idUser}")
+    public ResponseEntity<List<Annonce>> annoncesJoueur(@PathVariable long idUser) {
+        return annonceService.annoncesJoueur(idUser);
+    }
 
- @PutMapping("/refuserParticipation/{idJoueur}/{idAnnonce}")
- public ResponseEntity<String> refuserParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
-     return annonceService.refuserParticipation(idJoueur, idAnnonce);
- }
+    @PutMapping("/refuserParticipation/{idJoueur}/{idAnnonce}")
+    public ResponseEntity<String> refuserParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
+        return annonceService.refuserParticipation(idJoueur, idAnnonce);
+    }
 
     @PutMapping("/accepterParticipation/{idJoueur}/{idAnnonce}")
     public ResponseEntity<String> accepterParticipation(@PathVariable long idJoueur,@PathVariable long idAnnonce) {
