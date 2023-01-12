@@ -41,7 +41,7 @@ public class UserRest {
     public ResponseEntity<List<User>> findByNomCompletLike(@PathVariable String nomComplet) {
         return userService.findByNomCompletLike(nomComplet);
     }
-    @PutMapping(value = "/update")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<Object> updateAccount(@PathVariable Long id ,@RequestBody UserDTO userDTO) {
         return  userService.updateAccount(id, userDTO);
     }

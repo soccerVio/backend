@@ -3,6 +3,7 @@ package soccervio.back.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import soccervio.back.utils.ImageUtil;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import org.springframework.data.util.Pair;
 
 @Service
 public class TerrainService {
@@ -27,6 +30,7 @@ public class TerrainService {
     private final UserService userService;
     private final TerrainMapper terrainMapper;
     private final ImageUtil imageUtil;
+    private List<Terrain> terrains;
 
     public TerrainService(TerrainDao terrainDao, UserService userService,
                           TerrainMapper terrainMapper, ImageUtil imageUtil) {
@@ -143,15 +147,27 @@ public class TerrainService {
 
 
 
-    public  List<Terrain> searchTerrainsByPosition(float longitude1, float latitude1, float longitude2, float latitude2) {
-          return terrainDao.findByPositionBetween(longitude1, latitude1, longitude2, latitude2);
-    }
+//    public  List<Terrain> searchTerrainsByPosition(float longitude1, float latitude1, float longitude2, float latitude2) {
+//          return terrainDao.findByPositionBetween(longitude1, latitude1, longitude2, latitude2);
+//    }
 
-    public List<Terrain> searchTerrainsBetweenHoures(List<Terrain> terrains, LocalTime startTime, LocalTime endTime) {
+//    public List<Terrain> searchTerrainsBetweenHoures(List<Terrain> terrains, LocalTime startTime, LocalTime endTime) {
+//        return terrains.stream()
+//            .filter(terrain -> terrain.getHeureO().isAfter(startTime) && terrain.getHeureF().isBefore(endTime))
+//            .collect(Collectors.toList());
+//
+//    }
+    public List<float[]> getPositionsNear(float latitude, float longitude, Date dateDebut, Date dateFin, LocalTime heurDebut, LocalTime heureFin) {
         return terrains.stream()
-            .filter(terrain -> terrain.getHeureO().isAfter(startTime) && terrain.getHeureF().isBefore(endTime))
+            .filter(terrain ->
+                terrain.getLatitude() >= latitude - 0.01F && terrain.getLatitude() <= latitude + 0.01F &&
+                    terrain.getLongitude() >= longitude - 0.01F && terrain.getLongitude() <= longitude + 0.01F &&
+                    terrain.getHeureO().isAfter(heurDebut) && terrain.getHeureF().isBefore(heureFin)
+            )
+            .flatMap(terrain -> terrain.getReservations().stream())
+            .filter(reservation -> reservation.getDate().after(dateDebut ) && reservation.getDate().before(dateFin) )
+            .map(reservation -> new float[]{reservation.getTerrain().getLatitude(), reservation.getTerrain().getLongitude()})
             .collect(Collectors.toList());
-
     }
 
     }

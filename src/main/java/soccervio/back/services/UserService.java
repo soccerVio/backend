@@ -117,7 +117,7 @@ public class UserService implements UserDetailsService {
         currentUser.setNomComplet(userDto.getNomComplet());
         currentUser.setUsername(userDto.getUsername());
         currentUser.setNumTel(userDto.getNumTel());
-       // currentUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        currentUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
         //Image image = new Image();
         //image.setContent(userDto.getImage().getContent());
         //image.setType(userDto.getImage().getType());
