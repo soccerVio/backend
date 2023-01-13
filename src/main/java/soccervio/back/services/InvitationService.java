@@ -6,10 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soccervio.back.dao.InvitationDao;
 import soccervio.back.dtos.invitation.InvitationDTO;
-import soccervio.back.entities.Annonce;
-import soccervio.back.entities.Invitation;
-import soccervio.back.entities.UserInvitation;
+import soccervio.back.entities.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,13 +21,14 @@ public class InvitationService {
     @Autowired
     private AnnonceService annonceService;
     private final UserService userService;
-
+    private final NotificationStorageService notificationStorageService;
     @Autowired
     private UserInvitationService userInvitationService;
 
-    public InvitationService(InvitationDao invitationDao,UserService userService) {
+    public InvitationService(InvitationDao invitationDao, UserService userService, NotificationStorageService notificationStorageService) {
         this.invitationDao = invitationDao;
         this.userService = userService;
+        this.notificationStorageService = notificationStorageService;
     }
 
     public ResponseEntity<String> ajoutInvitation(InvitationDTO invitationDTO){
@@ -44,6 +45,23 @@ public class InvitationService {
                 .collect(Collectors.toSet());
         userInvitationService.saveAll(invites);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        for(UserInvitation userInvitation : invites)
+            notificationStorageService.createNotificationStorage(Notification
+                    .builder()
+                    .dateEnvoie(new Date())
+                    .delivered(false)
+                    .content("Vous ets invité à jouer un match au terrain "
+                            + invitation.getAnnonce().getReservation().getTerrain().getTitre()
+                            + " le "
+                            + sdf.format(invitation.getAnnonce().getReservation().getDate())
+                            + " à "
+                            + invitation.getAnnonce().getReservation().getHeure())
+                    .notificationType(NotificationType.NEW_IVITATION)
+                    .userFrom(invitation.getInvitant())
+                    .userTo(userInvitation.getInvite())
+                    .build());
+
         return new ResponseEntity<>("Invitation ajouté avec succès", HttpStatus.valueOf(201));
     }
 
@@ -55,17 +73,6 @@ public class InvitationService {
     public List<Invitation> findByAnnonceIn(List<Annonce> annonceList) {
         return invitationDao.findByAnnonceIn(annonceList);
     }
-
-    /*public ResponseEntity<String> deleteInvite(long id, long idInvite){
-        Invitation invitation = invitationDao.findById(id).get();
-        Set<User> invites = invitation.getInvites();
-        User deletedInvite = userService.getUserById(idInvite);
-        invitation.setInvites();
-        invites.remove(deletedInvite);
-
-        participationDao.deleteById(id);
-        return new ResponseEntity<>("participation supprimé", HttpStatus.valueOf(200));
-    }*/
 
     public  List<Invitation> getInvitations(){
         return invitationDao.findAll();

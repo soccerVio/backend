@@ -8,7 +8,9 @@ import soccervio.back.dao.UserInvitationDao;
 import soccervio.back.entities.*;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,18 +23,20 @@ public class UserInvitationService {
 
     private final ReservationService reservationService;
 
+    private final NotificationStorageService notificationStorageService;
     @Autowired
     private InvitationService invitationService;
 
     public UserInvitationService(UserInvitationDao userInvitationDao, AnnonceService annonceService,
-                                 ReservationService reservationService) {
+                                 ReservationService reservationService, NotificationStorageService notificationStorageService) {
         this.userInvitationDao = userInvitationDao;
         this.annonceService = annonceService;
         this.reservationService = reservationService;
+        this.notificationStorageService = notificationStorageService;
     }
 
-    public Set<UserInvitation> saveAll(Set<UserInvitation> userInvitationSet){
-        return userInvitationSet
+    public void saveAll(Set<UserInvitation> userInvitationSet){
+        userInvitationSet
                 .stream()
                 .map(userInvitationDao::save).
                 collect(Collectors.toSet());
@@ -60,6 +64,16 @@ public class UserInvitationService {
         UserInvitation userInvitation = userInvitationDao.findById(idUserInvite).get();
         userInvitation.setAccepteParInvite(true);
         userInvitationDao.save(userInvitation);
+
+        notificationStorageService.createNotificationStorage(Notification
+                .builder()
+                .dateEnvoie(new Date())
+                .delivered(false)
+                .content(userInvitation.getInvite().getNomComplet() + " est invité à votre réservation")
+                .notificationType(NotificationType.ACCEPTED_INVIT_INVITE)
+                .userFrom(userInvitation.getInvite())
+                .userTo(userInvitation.getInvitation().getAnnonce().getReservation().getReservePar())
+                .build());
         return new ResponseEntity<>("invit accepted", HttpStatus.ACCEPTED);
     }
 
@@ -78,6 +92,21 @@ public class UserInvitationService {
         reservation.setNbrJoueurManq(reservation.getNbrJoueurManq()-1);
         reservation.getJoueurs().add(joueur);
         reservationService.saveReservation(reservation);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        notificationStorageService.createNotificationStorage(Notification
+                .builder()
+                .dateEnvoie(new Date())
+                .delivered(false)
+                .content("Vous etes approuvé pour jouer le match au terrain "
+                        + reservation.getTerrain().getTitre()
+                        + " le "
+                        + sdf.format(reservation.getDate())
+                        + " à "
+                        + reservation.getHeure())
+                .notificationType(NotificationType.NEW_IVITATION)
+                .userFrom(reservation.getReservePar())
+                .userTo(userInvitation.getInvite())
+                .build());
 
         return new ResponseEntity<>("invit accepted", HttpStatus.ACCEPTED);
     }

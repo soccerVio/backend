@@ -6,11 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import soccervio.back.dao.AnnonceDao;
 import soccervio.back.dtos.annoce.AnnonceDTO;
-import soccervio.back.entities.Annonce;
-import soccervio.back.entities.Reservation;
-import soccervio.back.entities.User;
+import soccervio.back.entities.*;
 
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,13 +22,14 @@ public class AnnonceService {
 
     @Autowired
     private ReservationService reservationService;
-
+    private final NotificationStorageService notificationStorageService;
     @Autowired
     private InvitationService invitationService;
     private final UserService userService;
 
-    public AnnonceService(AnnonceDao annonceDao, UserService userService) {
+    public AnnonceService(AnnonceDao annonceDao, NotificationStorageService notificationStorageService, UserService userService) {
         this.annonceDao = annonceDao;
+        this.notificationStorageService = notificationStorageService;
         this.userService = userService;
     }
 
@@ -69,6 +69,23 @@ public class AnnonceService {
     	 User joueur= userService.getUserById(idJoueur);
     	 annonce.getParticipants().remove(joueur);
          annonceDao.save(annonce);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        notificationStorageService.createNotificationStorage(Notification
+                .builder()
+                .dateEnvoie(new Date())
+                .delivered(false)
+                .content("Votre participation au reservation effecute le "
+                        + sdf.format(annonce.getReservation().getDate())
+                        + " à "
+                        + annonce.getReservation().getHeure()
+                        + "au terrain "
+                        + annonce.getReservation().getTerrain().getTitre()
+                        + " est refusé.")
+                .notificationType(NotificationType.PARTICIATION_REFUSE)
+                .userFrom(annonce.getReservation().getReservePar())
+                .userTo(joueur)
+                .build());
          return new ResponseEntity<>("refus avec succès", HttpStatus.valueOf(200));
     }
 
@@ -92,6 +109,24 @@ public class AnnonceService {
         }
         annonceDao.save(annonce);
         reservationService.saveReservation(reservation);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        notificationStorageService.createNotificationStorage(Notification
+                .builder()
+                .dateEnvoie(new Date())
+                .delivered(false)
+                .content("Votre participation au reservation effecute le "
+                        + sdf.format(annonce.getReservation().getDate())
+                        + " à "
+                        + annonce.getReservation().getHeure()
+                        + "au terrain "
+                        + annonce.getReservation().getTerrain().getTitre()
+                        + " est accepté.")
+                .notificationType(NotificationType.PARTICIATION_REFUSE)
+                .userFrom(annonce.getReservation().getReservePar())
+                .userTo(joueur)
+                .build());
+
         return new ResponseEntity<>("Acceptation avec succès", HttpStatus.valueOf(200));
     }
 
@@ -106,6 +141,23 @@ public class AnnonceService {
         participants.add(userService.getUserById(idParticipant));
         annonce.setParticipants(participants);
         annonceDao.save(annonce);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        notificationStorageService.createNotificationStorage(Notification
+                .builder()
+                .dateEnvoie(new Date())
+                .delivered(false)
+                .content(participant.getNomComplet()
+                        + " a participé a votre annonce du réservation effectué le "
+                        + sdf.format(annonce.getReservation().getDate())
+                        + " à "
+                        + annonce.getReservation().getHeure()
+                        + "au terrain "
+                        + annonce.getReservation().getTerrain().getTitre())
+                .notificationType(NotificationType.PARTICIATION_REFUSE)
+                .userFrom(participant)
+                .userTo(annonce.getReservation().getReservePar())
+                .build());
         return new ResponseEntity<>("Participation ajouté avec succès", HttpStatus.valueOf(200));
     }
 

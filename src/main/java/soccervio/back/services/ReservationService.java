@@ -107,6 +107,23 @@ public class ReservationService {
 		Reservation reservation = getReservationById(idResrvation);
 		annonceService.deleteAnnonceByReservation(reservation);
 		reservationDao.deleteById(idResrvation);
+
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		notificationStorageService.createNotificationStorage(Notification
+				.builder()
+				.dateEnvoie(new Date())
+				.delivered(false)
+				.content(reservation.getReservePar().getNomComplet()
+						+ " a annulé sa réservation du date "
+						+ sdf.format(reservation.getDate())
+						+ " "
+						+ reservation.getHeure()
+						+ " dans le terrain "
+						+ reservation.getTerrain().getTitre())
+				.notificationType(NotificationType.ANNULER_RESERVATION)
+				.userFrom(reservation.getReservePar())
+				.userTo(reservation.getTerrain().getProprietaire())
+				.build());
 		return new ResponseEntity<>("reservation annulé ave succès", HttpStatus.ACCEPTED);
 	}
 
