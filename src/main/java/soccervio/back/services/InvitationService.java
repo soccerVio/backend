@@ -21,13 +21,13 @@ public class InvitationService {
     @Autowired
     private AnnonceService annonceService;
     private final UserService userService;
-    private final UserInvitationService userInvitationService;
 
-    public InvitationService(InvitationDao invitationDao,
-                             UserService userService, UserInvitationService userInvitationService) {
+    @Autowired
+    private UserInvitationService userInvitationService;
+
+    public InvitationService(InvitationDao invitationDao,UserService userService) {
         this.invitationDao = invitationDao;
         this.userService = userService;
-        this.userInvitationService = userInvitationService;
     }
 
     public ResponseEntity<String> ajoutInvitation(InvitationDTO invitationDTO){
@@ -42,16 +42,18 @@ public class InvitationService {
                 .stream()
                 .map(inviteId -> new UserInvitation(userService.getUserById(inviteId), insertedInvit))
                 .collect(Collectors.toSet());
-        Set<UserInvitation> insertedInvites = userInvitationService.saveAll(invites);
+        userInvitationService.saveAll(invites);
 
-        //insertedInvit.setInvites(insertedInvites);
-        //invitationDao.save(insertedInvit);
         return new ResponseEntity<>("Invitation ajouté avec succès", HttpStatus.valueOf(201));
     }
 
 
     public void deleteByAnnonce(Annonce annonce){
         invitationDao.deleteByAnnonce(annonce);
+    }
+
+    public List<Invitation> findByAnnonceIn(List<Annonce> annonceList) {
+        return invitationDao.findByAnnonceIn(annonceList);
     }
 
     /*public ResponseEntity<String> deleteInvite(long id, long idInvite){
@@ -67,5 +69,9 @@ public class InvitationService {
 
     public  List<Invitation> getInvitations(){
         return invitationDao.findAll();
+    }
+
+    public List<Invitation> findByAnnonce(Annonce annonce) {
+        return invitationDao.findByAnnonce(annonce);
     }
 }

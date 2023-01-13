@@ -14,24 +14,26 @@ public class UserInvitation {
     private User invite;
 
     @ManyToOne
-    @JsonIgnore
     private Invitation invitation;
 
     private boolean accepteParInvite = false;
 
-    public UserInvitation() {
-    }
+    private boolean accepteParProp = false;
 
-    public UserInvitation(long id, User invite, Invitation invitation, boolean accepteParInvite) {
-        this.id = id;
-        this.invite = invite;
-        this.invitation = invitation;
-        this.accepteParInvite = accepteParInvite;
+    public UserInvitation() {
     }
 
     public UserInvitation(User invite, Invitation invitation) {
         this.invite = invite;
         this.invitation = invitation;
+    }
+    public UserInvitation(long id, User invite, Invitation invitation, boolean accepteParInvite,
+                          boolean accepteParProp) {
+        this.id = id;
+        this.invite = invite;
+        this.invitation = invitation;
+        this.accepteParInvite = accepteParInvite;
+        this.accepteParProp = accepteParProp;
     }
 
     public long getId() {
@@ -50,6 +52,14 @@ public class UserInvitation {
         this.invite = invite;
     }
 
+    public Invitation getInvitation() {
+        return invitation;
+    }
+
+    public void setInvitation(Invitation invitation) {
+        this.invitation = invitation;
+    }
+
     public boolean isAccepteParInvite() {
         return accepteParInvite;
     }
@@ -58,11 +68,11 @@ public class UserInvitation {
         this.accepteParInvite = accepteParInvite;
     }
 
-    public Invitation getInvitation() {
-        return invitation;
+    public boolean isAccepteParProp() {
+        return accepteParProp;
     }
 
-    public void setInvitation(Invitation invitation) {
-        this.invitation = invitation;
+    public void setAccepteParProp(boolean accepteParProp) {
+        this.accepteParProp = accepteParProp;
     }
 }

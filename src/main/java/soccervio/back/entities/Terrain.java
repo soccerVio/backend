@@ -1,11 +1,12 @@
 package soccervio.back.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity(name="terrains")
@@ -18,7 +19,7 @@ public class Terrain {
     @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "path")
     @CollectionTable(name = "images", joinColumns = @JoinColumn(name = "terrain_id"))
-    private Set<String> images = new java.util.LinkedHashSet<>();
+    private Set<String> images = new LinkedHashSet<>();
     private float longitude;
     private float latitude;
     @Lob
@@ -33,7 +34,9 @@ public class Terrain {
     private boolean assure;
     @ManyToOne
     private User proprietaire;
+
     @OneToMany(mappedBy = "terrain")
+    @JsonIgnore
     private Collection<Reservation> reservations;
 
     public Terrain() {
@@ -42,7 +45,7 @@ public class Terrain {
     public Terrain(long id, String titre, Set<String> images, float longitude,
                    float latitude, String description, Date dateCreation, String adresse,
                    LocalTime heureO, LocalTime heureF, float prixHr, int nbrJoueur,
-                   boolean avecDouche, boolean assure, User proprietaire) {
+                   boolean avecDouche, boolean assure, User proprietaire, Collection<Reservation> reservations) {
         this.id = id;
         this.titre = titre;
         this.images = images;
@@ -58,6 +61,7 @@ public class Terrain {
         this.avecDouche = avecDouche;
         this.assure = assure;
         this.proprietaire = proprietaire;
+        this.reservations = reservations;
     }
 
     public long getId() {
@@ -181,6 +185,10 @@ public class Terrain {
     }
 
     public Collection<Reservation> getReservations() {
-       return reservations;
+        return reservations;
+    }
+
+    public void setReservations(Collection<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

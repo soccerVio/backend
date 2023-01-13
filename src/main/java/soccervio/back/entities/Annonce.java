@@ -18,7 +18,7 @@ public class Annonce {
     @OneToOne
     private Reservation reservation;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "participants_annonces",
             joinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "annonce_id", referencedColumnName = "id"))

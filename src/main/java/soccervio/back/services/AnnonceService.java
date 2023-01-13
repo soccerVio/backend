@@ -76,8 +76,12 @@ public class AnnonceService {
     public ResponseEntity<String> accepterParticipation(long idJoueur,long idAnnonce){
         Annonce annonce = annonceDao.findById(idAnnonce).get();
         Reservation reservation = annonce.getReservation();
-        if (reservation.getNbrJoueurManq() == 0)
+        if (reservation.getNbrJoueurManq() == 0){
+            annonce.setParticipants(null);
+            annonce.setFerme(true);
+            annonceDao.save(annonce);
             return new ResponseEntity<>("Nombre de joueur egual a 0", HttpStatus.valueOf(400));
+        }
    	    User joueur = userService.getUserById(idJoueur);
    	    annonce.getParticipants().remove(joueur);
         reservation.getJoueurs().add(joueur);
@@ -112,6 +116,14 @@ public class AnnonceService {
     public void deleteAnnonceByReservation(Reservation reservation){
         invitationService.deleteByAnnonce(annonceDao.findByReservation(reservation));
         annonceDao.deleteByReservation(reservation);
+    }
+
+    public List<Annonce> findByReservationIn(List<Reservation> reservations) {
+        return annonceDao.findByReservationIn(reservations);
+    }
+
+    public Annonce findByReservation(Reservation reservation) {
+        return annonceDao.findByReservation(reservation);
     }
 }
 

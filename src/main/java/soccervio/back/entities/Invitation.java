@@ -1,5 +1,7 @@
 package soccervio.back.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ public class Invitation {
 	private Annonce annonce;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "invitation")
+	@JsonIgnore
 	private Set<UserInvitation> invites;
 
 
